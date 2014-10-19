@@ -110,11 +110,40 @@ class ReflowControllerDummy(object):
         xs = [0]
         ys = [int(self._conf.get('profile', 'starttemp'))]
         labels = []
+        pwrs = []
+        for i, pre in enumerate(self._pres):
+            labels.append(pre)
+            dt = int(self._conf.get('profile', pre+'time'))
+            temp = int(self._conf.get('profile', pre+'temp'))
+            capac = int(self._conf.get('profile', pre+'pwr'))
+            xs.append(xs[i] + dt)
+            ys.append(temp)
+            pwrs.append(capac)
+        return xs, ys, labels, pwrs
+
+    def get_profile_old(self):
+        xs = [0]
+        ys = [int(self._conf.get('profile', 'starttemp'))]
+        labels = []
         for i, pre in enumerate(self._pres):
             labels.append(pre)
             dt = int(self._conf.get('profile', pre+'time'))
             temp = int(self._conf.get('profile', pre+'temp'))
             xs.append(xs[i] + dt)
             ys.append(temp)
-        return xs, ys, labels 
+        return xs, ys, labels
+
+    def set_properties(self, phase, temp=None, time=None, pwr=None):
+        if temp is not None:
+            self._conf.set('profile', phase+'temp', value=temp)
+        if time is not None:
+            self._conf.set('profile', phase+'time', value=time)
+        if pwr is not None:
+            self._conf.set('profile', phase+'pwr', value=pwr)
+
+    def get_properties(self, phase):
+        temp = self._conf.get('profile', phase+'temp')
+        time = self._conf.get('profile', phase+'time')
+        pwr = self._conf.get('profile', phase+'pwr')
+        return temp, time, pwr
 
