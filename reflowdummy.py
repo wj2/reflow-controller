@@ -99,6 +99,10 @@ class ReflowControllerDummy(object):
         secs = int(round(time.time() - self._start_time))
         return secs, random.randint(10, 200)
 
+    def get_total_time(self):
+        xs, _, _, _ = self.get_profile()
+        return xs[-1]
+
     def get_temp_and_time_encoded(self):
         tempstring = self._send_cmd('tempshow')
         secs, whoknows, temp = tempstring.split(',')

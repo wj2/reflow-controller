@@ -125,7 +125,7 @@ class ReflowMPLGui(object):
     def _abort_clicked(self, event):
         self._active = False
         self._reflow.stop()
-        self._al.nums = ([], [])
+        self._al_nums = ([], [])
         self._al.set_data([], [])
         plt.draw()
 
