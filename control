@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+import argparse
+import reflowmplgui as gui
+import reflow as controller
+import reflowdummy as dummy_controller
+
+def make_parser():
+    parser = argparse.ArgumentParser(description='reflow controller gui')
+    parser.add_argument('config_file', help='path to config file to use for' 
+                        'reflow controller')
+    parser.add_argument('-t', '--test', help='use dummy reflow controller for'
+                        'testing the gui', action='store_true', default=False)
+    return parser
+
+def run(config, test):
+    if test:
+        control = dummy_controller.ReflowControllerDummy.from_config(config)
+    else:
+        control = controller.ReflowController.from_config(config)
+    gui_control = gui.ReflowMPLGui(control)
+
+if __name__ == '__main__':
+    parser = make_parser()
+    args = parser.parse_args()
+    run(args.config_file, args.test)
